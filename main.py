@@ -22,13 +22,23 @@ The program has a few options
 The program uses the following modules:
 Datetime: Allows to see how long you've studied, when the study session happened, and allows you to visualize data
 pyinputplus: Allows for simple input validation
-time: allows the program to take certain pauses so it can clearly display data to the user'''
+time: allows the program to take certain pauses so it can clearly display data to the user
+pip: installs pyinputplus and any other packages that you may need'''
 
 import datetime
 import pyinputplus as pyip
 import time
+import pip
+
+if hasattr(pip,"main"):
+    pip.main(['install','pyinputplus'])
+else:
+    pip._internal.main(['install','pyinputplus'])
+
 
 def start_program():
+    data_file = open("Study Session Tracker.txt","w")
+    data_file.close()
     print("Welcome to the focus program!")
     time.sleep(1)
     print("Please select an option below!")
@@ -56,13 +66,40 @@ def focus_mode():
         else:
             end_time = datetime.datetime.now()
             end_time_studied = end_time - start_time
+            total_seconds = end_time_studied.seconds
+            hours = end_time_studied.seconds // 3600
+            minutes = (end_time_studied.seconds % 3600) // 60
+            seconds = (end_time_studied.seconds % 60)
             print("You have studied for: \n")
-            print(end_time_studied.seconds // 3600, "hours")
-            print((end_time_studied.seconds % 3600) // 60, "minutes")
-            print((end_time_studied.seconds % 60), "seconds")
+            print(hours, "hours")
+            print(minutes, "minutes")
+            print(seconds, "seconds")
             test_file = open("Study Session Tracker.txt","a")
-            test_file.write("Does this work?")
+            test_file.write(f'[{total_seconds},{hours}, {minutes}, {seconds}, {start_time}, {end_time}]')
             test_file.close()
+
+def see_progress():
+    pass
+
+def calculate_max(list_to_calc):
+    pass
+
+def calculate_average(list_to_calc):
+    pass
+
+def calculate_min(list_to_calc):
+    pass
+
+def convert_to_seconds(time):
+    return (time[0] * 3600) + (time[1] * 60) + (time[2])
+
+def convert_to_clocktime(time):
+    hours = time // 3600
+    minutes = (time % 3600) // 60
+    seconds = time % 60
+
+    return [hours,minutes,seconds]
+    
 
 start_program()
 
